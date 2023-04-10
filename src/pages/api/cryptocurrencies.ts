@@ -6,6 +6,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 const apiKey = "6ec6ced4-f700-4f0d-8495-4352fb02f295";
 const baseUrl = "https://pro-api.coinmarketcap.com/v1";
 
+type Cryptocurrency = { id: string; cmc_rank: string; symbol: string; quote: { [x: string]: { percent_change_24h: string; price: string }; }; }
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -17,7 +19,7 @@ export default async function handler(
       params: { limit: 100, convert: currency },
     });
 
-    const data = response.data.data.map((crypto: any) => ({
+    const data = response.data.data.map((crypto: Cryptocurrency) => ({
       id: crypto.id,
       rank: crypto.cmc_rank,
       symbol: crypto.symbol,
