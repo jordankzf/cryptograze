@@ -1,17 +1,37 @@
 import useCryptoList from "@/hooks/useCryptoList";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Draggable from "react-draggable";
 import Detail from "./Detail";
 
+type Popup = {
+  coin: string;
+  position: { x: number; y: number };
+};
+
 export default function List() {
   const [portal, setPortal] = useState<number>();
-  const [portals, setPortals] = useState();
+  const [popups, setPopups] = useState<Popup[]>([]);
 
-  function addPortal(e, coin) {
-    setPortals([portals, { coin, position: { x: e.clientX, y: clientY } }]);
+  function addPopup(
+    e: MouseEvent<HTMLTableRowElement, globalThis.MouseEvent>,
+    coin: string
+  ) {
+    setPopups((prevPopups: any) => [
+      ...prevPopups,
+      {
+        coin,
+        position: { x: e.clientX, y: e.clientY },
+      },
+    ]);
   }
+
+  const removePopup = (coin: string) => {
+    setPopups((prevPopups) =>
+      prevPopups.filter((popup: Popup) => popup.coin !== coin)
+    );
+  };
 
   const { cryptoList, loading } = useCryptoList();
 
@@ -41,7 +61,7 @@ export default function List() {
             </>
           ) : (
             cryptoList.map((coin) => (
-              <tr key={coin.id} onClick={() => setPortal(coin.id)}>
+              <tr key={coin.id} onClick={(e) => addPopup(e, coin.id)}>
                 <td>{coin.rank}</td>
                 <td>{coin.symbol}</td>
                 <td>{coin.price}</td>
@@ -50,9 +70,9 @@ export default function List() {
             ))
           )}
         </tbody>
-        {portal &&
+        {popups.map((p) =>
           createPortal(
-            <Draggable defaultPosition={{ x: 81, y: 300 }}>
+            <Draggable defaultPosition={p.position}>
               <div
                 style={{
                   //   position: "relative",
@@ -63,14 +83,15 @@ export default function List() {
               >
                 <Detail
                   onClose={() => {
-                    setPortal();
+                    removePopup(p.coin);
                   }}
-                  coin={portal}
+                  coin={p.coin}
                 />
               </div>
             </Draggable>,
             document.body
-          )}
+          )
+        )}
       </table>
     </div>
   );

@@ -1,7 +1,7 @@
 import useCryptoDetail from "@/hooks/useCryptoDetail";
 
 interface cryptoDetailPopupProps {
-  coin: number;
+  coin: string;
   onClose: () => void;
 }
 
