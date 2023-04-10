@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import cryptoStore from "@/stores/cryptoStore";
+import { observer } from "mobx-react-lite";
 
 const refreshSvg = (
   <svg fill="#ffffff" viewBox="0 0 487.23 487.23" width="16px" height="16px">
@@ -8,34 +9,30 @@ const refreshSvg = (
   </svg>
 );
 
-export default function Settings() {
-  const [currency, setCurrency] = useState("USD");
+function Settings() {
+  const { triggerRefresh, setSelectedCurrency, selectedCurrency } = cryptoStore;
   const router = useRouter();
   return (
     <div className="settings-container">
       <select
-        value={currency}
+        value={selectedCurrency}
         className="dropdown"
         name="currency"
         id="currency"
         onChange={(event) => {
           const newCurrency = event.target.value;
-          setCurrency(newCurrency);
-          router.replace(
-            {
-              pathname: router.route,
-              query: { currency: newCurrency },
-            },
-            undefined,
-            { shallow: true }
-          );
+          setSelectedCurrency(newCurrency);
         }}
       >
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
         <option value="CNY">CNY</option>
       </select>
-      <button className="refresh-btn">{refreshSvg}</button>
+      <button onClick={triggerRefresh} className="refresh-btn">
+        {refreshSvg}
+      </button>
     </div>
   );
 }
+
+export default observer(Settings);

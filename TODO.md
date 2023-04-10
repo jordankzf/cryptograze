@@ -1,4 +1,5 @@
 1. Format numbers
 2. Multiple popovers
-3. Loading state
-4. State management
+3. Skeleton loader
+4. State management /
+5. derive btc /

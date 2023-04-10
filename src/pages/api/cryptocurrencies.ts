@@ -6,7 +6,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
 const apiKey = "6ec6ced4-f700-4f0d-8495-4352fb02f295";
 const baseUrl = "https://pro-api.coinmarketcap.com/v1";
 
-type Cryptocurrency = { id: string; cmc_rank: string; symbol: string; quote: { [x: string]: { percent_change_24h: string; price: string }; }; }
+type Cryptocurrency = {
+  id: number;
+  cmc_rank: number;
+  symbol: string;
+  quote: { [x: string]: { percent_change_24h: number; price: number } };
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,17 +19,20 @@ export default async function handler(
 ) {
   try {
     const currency = (req.query.currency as string | undefined) ?? "USD";
-    const response = await axios.get(`${baseUrl}/cryptocurrency/listings/latest`, {
-      headers: { "X-CMC_PRO_API_KEY": apiKey },
-      params: { limit: 100, convert: currency },
-    });
+    const response = await axios.get(
+      `${baseUrl}/cryptocurrency/listings/latest`,
+      {
+        headers: { "X-CMC_PRO_API_KEY": apiKey },
+        params: { limit: 100, convert: currency },
+      }
+    );
 
     const data = response.data.data.map((crypto: Cryptocurrency) => ({
-      id: crypto.id,
-      rank: crypto.cmc_rank,
+      id: crypto.id.toString(),
+      rank: crypto.cmc_rank.toString(),
       symbol: crypto.symbol,
       price: crypto.quote[currency].price,
-      percent_change_24h: crypto.quote[currency].percent_change_24h,
+      percent_change_24h: crypto.quote[currency].percent_change_24h.toFixed(2) + "%",
     }));
 
     res.json(data);

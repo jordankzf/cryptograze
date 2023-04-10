@@ -27,16 +27,20 @@ export default function List() {
           </tr>
         </thead>
         <tbody>
-          {!loading && cryptoList
-            ? cryptoList.map((coin) => (
-                <tr key={coin.id} onClick={() => setPortal(coin.id)}>
-                  <td>{coin.rank}</td>
-                  <td>{coin.symbol}</td>
-                  <td>{coin.price}</td>
-                  <td>{coin.percent_change_24h}</td>
-                </tr>
-              ))
-            : null}
+          {!loading && cryptoList ? (
+            cryptoList.map((coin) => (
+              <tr key={coin.id} onClick={() => setPortal(coin.id)}>
+                <td>{coin.rank}</td>
+                <td>{coin.symbol}</td>
+                <td>{coin.price}</td>
+                <td>{coin.percent_change_24h}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={4}>Loading</td>
+            </tr>
+          )}
         </tbody>
         {portal &&
           createPortal(

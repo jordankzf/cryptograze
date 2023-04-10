@@ -15,11 +15,12 @@ export default async function handler(
       headers: { "X-CMC_PRO_API_KEY": apiKey },
       params: { id, convert: currency },
     });
-
+    
     const crypto = response.data.data[id as string];
+
     const data = {
-      id: crypto.id,
-      rank: crypto.cmc_rank,
+      id: crypto.id.toString(),
+      rank: crypto.cmc_rank.toString(),
       name: crypto.name,
       symbol: crypto.symbol,
       price: crypto.quote[currency].price,
@@ -28,7 +29,7 @@ export default async function handler(
       // Free plan does not allow multiple currency conversion,
       // so you can't request for the price in BTC
       // price_btc: crypto.quote.BTC.price,
-      percent_change_24h: crypto.quote[currency].percent_change_24h,
+      percent_change_24h: crypto.quote[currency].percent_change_24h.toFixed(2),
       total_supply: crypto.total_supply,
       circulating_supply: crypto.circulating_supply,
     };

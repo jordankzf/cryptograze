@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { autorun } from "mobx";
 import { Cryptocurrency } from "./useCryptoList";
+import cryptoStore from "@/stores/cryptoStore";
+import { formatNumbers, dynamicRounding } from "@/helpers/formatNumbers";
+import BigNumber from "bignumber.js";
 
 interface CryptocurrencyDetail extends Cryptocurrency {
   name: string;
@@ -8,6 +12,7 @@ interface CryptocurrencyDetail extends Cryptocurrency {
   market_cap: string;
   total_supply: string;
   circulating_supply: string;
+  btc_price: string;
 }
 
 export default function useCryptoDetail(coin: number | null) {
@@ -16,16 +21,32 @@ export default function useCryptoDetail(coin: number | null) {
   );
   const [loading, setLoading] = useState<boolean>(false);
 
+  const fetchData = async (currency: string, bitcoinPrice: number) => {
+    setLoading(true);
+    const result = await axios.get(
+      `/api/cryptocurrencies/${coin}?currency=${currency}`
+    );
+
+    const btc_price = dynamicRounding(
+      BigNumber(result.data.price).dividedBy(BigNumber(bitcoinPrice))
+    );
+
+    setCryptoDetail({ ...(formatNumbers(result.data) as any), btc_price });
+
+    setLoading(false);
+  };
+
   useEffect(() => {
-    if (coin) {
-      setLoading(true);
-      const fetchData = async () => {
-        const result = await axios.get(`/api/cryptocurrencies/${coin}`);
-        setCryptoDetail(result.data);
-        setLoading(false);
-      };
-      fetchData();
-    }
+    const disposer = autorun(() => {
+      const { refreshKey, selectedCurrency, bitcoinPrice } = cryptoStore;
+      if (coin && refreshKey && selectedCurrency) {
+        fetchData(selectedCurrency, bitcoinPrice);
+      }
+    });
+
+    return () => {
+      disposer();
+    };
   }, [coin]);
 
   return { cryptoDetail, loading };
