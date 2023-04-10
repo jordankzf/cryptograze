@@ -1,14 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Cryptocurrency } from "./List";
-
-interface CryptocurrencyDetail extends Cryptocurrency {
-  name: string;
-  volume_24h: string;
-  market_cap: string;
-  total_supply: string;
-  circulating_supply: string;
-}
+import useCryptoDetail from "@/hooks/useCryptoDetail";
 
 interface CryptoDetailPopupProps {
   coin: number;
@@ -19,17 +9,9 @@ export default function Detail({
   coin,
   onClose,
 }: CryptoDetailPopupProps): JSX.Element {
-  const [cryptoDetail, setCryptoDetail] = useState<CryptocurrencyDetail>();
+  const { cryptoDetail, loading } = useCryptoDetail(coin);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get(`/api/cryptocurrencies/${coin}`);
-      setCryptoDetail(result.data);
-    };
-    fetchData();
-  }, []);
-
-  if (cryptoDetail) {
+  if (!loading && cryptoDetail) {
     return (
       <div
         className="detail-popover"

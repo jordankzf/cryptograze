@@ -1,28 +1,19 @@
+import useCryptoList from "@/hooks/useCryptoList";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Draggable from "react-draggable";
 import Detail from "./Detail";
 
-export interface Cryptocurrency {
-  id: number;
-  rank: number;
-  symbol: string;
-  price: number;
-  percent_change_24h: number;
-}
-
 export default function List() {
-  const [data, setData] = useState<Cryptocurrency[]>([]);
   const [portal, setPortal] = useState<number>();
+  const [portals, setPortals] = useState();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get(`/api/cryptocurrencies`);
-      setData(result.data);
-    };
-    fetchData();
-  }, []);
+  function addPortal(e, coin) {
+    setPortals([portals, { coin, position: { x: e.clientX, y: clientY } }]);
+  }
+
+  const { cryptoList, loading } = useCryptoList();
 
   return (
     <div className="table-container">
@@ -36,8 +27,8 @@ export default function List() {
           </tr>
         </thead>
         <tbody>
-          {data
-            ? data.map((coin) => (
+          {!loading && cryptoList
+            ? cryptoList.map((coin) => (
                 <tr key={coin.id} onClick={() => setPortal(coin.id)}>
                   <td>{coin.rank}</td>
                   <td>{coin.symbol}</td>
