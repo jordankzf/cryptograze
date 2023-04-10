@@ -4,7 +4,7 @@ type KeyValuePair = Record<string, number | string>;
 
 export function dynamicRounding(number: BigNumber): string {
   if (number.isLessThanOrEqualTo(0.1)) {
-    return number.toFixed(8);
+    return number.toFixed(6);
   } else if (number.isLessThan(1.1)) {
     return number.toFixed(4);
   } else {

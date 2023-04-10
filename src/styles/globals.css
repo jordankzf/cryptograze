@@ -85,10 +85,15 @@ h1 {
 
 /* Table */
 table {
-  width: 100%;
+  /* width: 100%; */
   border-collapse: collapse;
   font-size: 14px;
   margin-top: 10px;
+}
+
+.detail-popover {
+  background-color: rgba(180, 180, 180, 1);
+  color: black;
 }
 
 .detail-popover thead {
@@ -109,9 +114,36 @@ table {
   height: 20px;
   font-weight: bold;
 }
+.table-row-skeleton {
+  animation: skeleton-loading 1s ease-in-out infinite;
+  background-color: #3c3c3c;
+  color: transparent;
+}
+
+.detail-popover.skeleton {
+  background-color: rgba(180, 180, 180, 1);
+  color: transparent;
+}
+
+.detail-popover.skeleton td {
+  background-color: #eee;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
 
 .table-container {
-  max-height: 50vh;
+  height: 50vh;
   overflow: scroll;
 }
 

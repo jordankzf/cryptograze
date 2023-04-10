@@ -39,7 +39,7 @@ export default function useCryptoDetail(coin: number | null) {
   useEffect(() => {
     const disposer = autorun(() => {
       const { refreshKey, selectedCurrency, bitcoinPrice } = cryptoStore;
-      if (coin && refreshKey && selectedCurrency) {
+      if (coin && selectedCurrency) {
         fetchData(selectedCurrency, bitcoinPrice);
       }
     });

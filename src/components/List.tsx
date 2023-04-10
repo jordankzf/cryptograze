@@ -27,7 +27,19 @@ export default function List() {
           </tr>
         </thead>
         <tbody>
-          {!loading && cryptoList ? (
+          {loading || !cryptoList ? (
+            <>
+              {[...Array(20)].map((_, i) => (
+                <tr key={i} className="table-row-skeleton">
+                  {/* Dummy data */}
+                  <td>1</td>
+                  <td>USDT</td>
+                  <td>12345.67</td>
+                  <td>1.00%</td>
+                </tr>
+              ))}
+            </>
+          ) : (
             cryptoList.map((coin) => (
               <tr key={coin.id} onClick={() => setPortal(coin.id)}>
                 <td>{coin.rank}</td>
@@ -36,10 +48,6 @@ export default function List() {
                 <td>{coin.percent_change_24h}</td>
               </tr>
             ))
-          ) : (
-            <tr>
-              <td colSpan={4}>Loading</td>
-            </tr>
           )}
         </tbody>
         {portal &&
