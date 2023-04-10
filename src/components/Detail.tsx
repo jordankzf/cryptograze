@@ -2,7 +2,7 @@ import useCryptoDetail from "@/hooks/useCryptoDetail";
 
 interface cryptoDetailPopupProps {
   coin: string;
-  onClose: () => void;
+  onClose: (coin: string) => void;
 }
 
 export default function Detail({
@@ -18,7 +18,7 @@ export default function Detail({
           <tr>
             <th>{cryptoDetail && cryptoDetail.name}</th>
             <th className="close-button-container">
-              <button className="close-button" onClick={onClose}>
+              <button className="close-button" onClick={() => onClose(coin)}>
                 X
               </button>
             </th>

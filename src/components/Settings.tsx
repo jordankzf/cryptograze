@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import cryptoStore from "@/stores/cryptoStore";
 import { observer } from "mobx-react-lite";
 

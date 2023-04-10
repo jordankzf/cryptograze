@@ -1,18 +1,15 @@
 import useCryptoList from "@/hooks/useCryptoList";
-import axios from "axios";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 import { createPortal } from "react-dom";
-import Draggable from "react-draggable";
-import Detail from "./Detail";
+import Popup from "./Popup";
 
-type Popup = {
-  coin: string;
-  position: { x: number; y: number };
+type PopupT = {
+  id: string;
+  component: JSX.Element;
 };
 
 export default function List() {
-  const [portal, setPortal] = useState<number>();
-  const [popups, setPopups] = useState<Popup[]>([]);
+  const [popups, setPopups] = useState<PopupT[]>([]);
 
   function addPopup(
     e: MouseEvent<HTMLTableRowElement, globalThis.MouseEvent>,
@@ -21,15 +18,24 @@ export default function List() {
     setPopups((prevPopups: any) => [
       ...prevPopups,
       {
-        coin,
-        position: { x: e.clientX, y: e.clientY },
+        id: coin,
+        component: (
+          <Popup
+            key={coin}
+            coin={coin}
+            position={{ x: e.clientX, y: e.clientY }}
+            onClose={(coin) => {
+              removePopup(coin);
+            }}
+          />
+        ),
       },
     ]);
   }
 
   const removePopup = (coin: string) => {
     setPopups((prevPopups) =>
-      prevPopups.filter((popup: Popup) => popup.coin !== coin)
+      prevPopups.filter((popup: PopupT) => popup.id !== coin)
     );
   };
 
@@ -70,21 +76,7 @@ export default function List() {
             ))
           )}
         </tbody>
-        {popups.map((p) =>
-          createPortal(
-            <Draggable defaultPosition={p.position}>
-              <div className="draggable-container">
-                <Detail
-                  onClose={() => {
-                    removePopup(p.coin);
-                  }}
-                  coin={p.coin}
-                />
-              </div>
-            </Draggable>,
-            document.body
-          )
-        )}
+        {popups.map((p) => createPortal(p.component, document.body))}
       </table>
     </div>
   );
