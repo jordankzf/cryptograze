@@ -27,6 +27,7 @@ export default function useCryptoDetail(coin: number | null) {
       `/api/cryptocurrencies/${coin}?currency=${currency}`
     );
 
+    // CoinMarketCap's Free API currency limit has forced my hand
     const btc_price = dynamicRounding(
       BigNumber(result.data.price).dividedBy(BigNumber(bitcoinPrice))
     );

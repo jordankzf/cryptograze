@@ -9,6 +9,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    res.setHeader('Cache-Control', 'no-store');
     const { id } = req.query;
     const currency = (req.query.currency as string | undefined) ?? "USD";
     const response = await axios.get(`${baseUrl}/cryptocurrency/quotes/latest`, {

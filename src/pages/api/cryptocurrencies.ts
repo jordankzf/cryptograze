@@ -18,6 +18,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    // Next.js serverless functions caches responnses for 10 seconds by default
+    res.setHeader('Cache-Control', 'no-store');
     const currency = (req.query.currency as string | undefined) ?? "USD";
     const response = await axios.get(
       `${baseUrl}/cryptocurrency/listings/latest`,
