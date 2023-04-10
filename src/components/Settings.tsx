@@ -11,7 +11,6 @@ const refreshSvg = (
 
 function Settings() {
   const { triggerRefresh, setSelectedCurrency, selectedCurrency } = cryptoStore;
-  const router = useRouter();
   return (
     <div className="settings-container">
       <select

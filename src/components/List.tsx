@@ -73,14 +73,7 @@ export default function List() {
         {popups.map((p) =>
           createPortal(
             <Draggable defaultPosition={p.position}>
-              <div
-                style={{
-                  //   position: "relative",
-                  position: "fixed",
-                  bottom: 0,
-                  top: 0,
-                }}
-              >
+              <div className="draggable-container">
                 <Detail
                   onClose={() => {
                     removePopup(p.coin);

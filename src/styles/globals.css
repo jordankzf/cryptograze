@@ -20,7 +20,6 @@ code {
   justify-content: center;
 }
 
-/* General Styles */
 * {
   margin: 0;
   padding: 0;
@@ -33,7 +32,6 @@ body {
   color: #fff;
 }
 
-/* App Header */
 header {
   display: flex;
   justify-content: space-between;
@@ -49,7 +47,6 @@ h1 {
   padding: 0 4px;
 }
 
-/* Dropdown & Refresh Button */
 .dropdown,
 .refresh-btn {
   font-size: 16px;
@@ -83,9 +80,7 @@ h1 {
   outline: none;
 }
 
-/* Table */
 table {
-  /* width: 100%; */
   border-collapse: collapse;
   font-size: 14px;
   margin-top: 10px;
@@ -96,13 +91,15 @@ table {
   color: black;
 }
 
+.draggable-container {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+}
+
 .detail-popover thead {
   color: white;
 }
-/* .detail-popover thead tr {
-  display: flex;
-  justify-content: space-between;
-} */
 
 .close-button-container {
   text-align: right;
@@ -162,44 +159,7 @@ th {
   background: rgba(6, 25, 10, 0.7);
 }
 
-/* Row Hover */
 tr:hover {
   background: rgba(255, 255, 255, 0.1);
   cursor: pointer;
-}
-
-/* Pop-up */
-.pop-up {
-  /* display: none;
-  position: fixed; */
-  position: absolute;
-  /* top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); */
-  /* padding: 20px;
-  width: 80%;
-  max-width: 400px;
-  background: rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  animation: fadeIn 0.3s ease-in-out; */
-}
-
-/* .pop-up.visible {
-  display: block;
-}
-
-.pop-up h2,
-.pop-up p {
-  margin-bottom: 10px;
-} */
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }

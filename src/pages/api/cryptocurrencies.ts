@@ -19,7 +19,7 @@ export default async function handler(
 ) {
   try {
     // Next.js serverless functions caches responnses for 10 seconds by default
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader("Cache-Control", "no-store");
     const currency = (req.query.currency as string | undefined) ?? "USD";
     const response = await axios.get(
       `${baseUrl}/cryptocurrency/listings/latest`,
@@ -30,11 +30,13 @@ export default async function handler(
     );
 
     const data = response.data.data.map((crypto: Cryptocurrency) => ({
+      // No math operations to be performed on id and rank
       id: crypto.id.toString(),
       rank: crypto.cmc_rank.toString(),
       symbol: crypto.symbol,
       price: crypto.quote[currency].price,
-      percent_change_24h: crypto.quote[currency].percent_change_24h.toFixed(2) + "%",
+      percent_change_24h:
+        crypto.quote[currency].percent_change_24h.toFixed(2) + "%",
     }));
 
     res.json(data);

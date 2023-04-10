@@ -15,7 +15,7 @@ interface CryptocurrencyDetail extends Cryptocurrency {
   btc_price: string;
 }
 
-export default function useCryptoDetail(coin: number | null) {
+export default function useCryptoDetail(coin?: string) {
   const [cryptoDetail, setCryptoDetail] = useState<CryptocurrencyDetail | null>(
     null
   );
