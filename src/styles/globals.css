@@ -110,6 +110,7 @@ table {
   width: 20px;
   height: 20px;
   font-weight: bold;
+  cursor: pointer;
 }
 .table-row-skeleton {
   animation: skeleton-loading 1s ease-in-out infinite;
@@ -157,9 +158,10 @@ th {
   position: sticky;
   top: 0;
   background: rgba(6, 25, 10, 0.7);
+  cursor: default;
 }
 
-tr:hover {
+.table-container tr:hover {
   background: rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
