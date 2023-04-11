@@ -76,7 +76,7 @@ export default function List() {
             ))
           )}
         </tbody>
-        {popups.map((p) => createPortal(p.component, document.body))}
+        {popups.map((p) => p.component)}
       </table>
     </div>
   );
