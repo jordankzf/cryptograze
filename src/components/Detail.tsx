@@ -14,7 +14,7 @@ export default function Detail({
   return (
     <div className={`detail-popover ${loading ? "skeleton" : ""}`}>
       <table>
-        <thead>
+        <thead className="popover-window-handle">
           <tr>
             <th>{cryptoDetail && cryptoDetail.name}</th>
             <th className="close-button-container">

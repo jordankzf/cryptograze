@@ -11,7 +11,12 @@ type PopupProps = {
 
 function Popup({ coin, position, onClose }: PopupProps): JSX.Element {
   return createPortal(
-    <Draggable key={coin} defaultPosition={position}>
+    <Draggable
+      handle=".popover-window-handle"
+      cancel=".close-button"
+      key={coin}
+      defaultPosition={position}
+    >
       <div className="draggable-container">
         <Detail onClose={onClose} coin={coin} />
       </div>
