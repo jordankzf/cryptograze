@@ -9,17 +9,19 @@ type PopupT = {
 };
 
 export default function List() {
-  const [popups, setPopups] = useState<PopupT[]>([]);
+  const [popups, setPopups] = useState<{ [coinId: string]: JSX.Element }>({});
 
   function addPopup(
     e: MouseEvent<HTMLTableRowElement, globalThis.MouseEvent>,
     coin: string
   ) {
-    setPopups((prevPopups: any) => [
-      ...prevPopups,
-      {
-        id: coin,
-        component: (
+    setPopups((prevPopups: { [coinId: string]: JSX.Element }) => {
+      if (prevPopups.hasOwnProperty(coin)) {
+        return prevPopups;
+      }
+
+      const newPopup = {
+        [coin]: (
           <Popup
             key={coin}
             coin={coin}
@@ -29,15 +31,19 @@ export default function List() {
             }}
           />
         ),
-      },
-    ]);
+      };
+
+      return { ...prevPopups, ...newPopup };
+    });
   }
 
-  const removePopup = (coin: string) => {
-    setPopups((prevPopups) =>
-      prevPopups.filter((popup: PopupT) => popup.id !== coin)
-    );
-  };
+  function removePopup(coin: string) {
+    setPopups((prevPopups: { [coinId: string]: JSX.Element }) => {
+      const updatedPopups = { ...prevPopups };
+      delete updatedPopups[coin];
+      return updatedPopups;
+    });
+  }
 
   const { cryptoList, loading } = useCryptoList();
 
@@ -76,7 +82,7 @@ export default function List() {
             ))
           )}
         </tbody>
-        {popups.map((p) => p.component)}
+        {Object.values(popups).map((p) => p)}
       </table>
     </div>
   );
